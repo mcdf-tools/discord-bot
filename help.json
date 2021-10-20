@@ -17,11 +17,11 @@
     },
     {
         "name": "leaderboard",
-		"usage": "`%leaderboard [sort] [reverse]`",
+		"usage": "`%leaderboard [sort] [limit] [reverse]`",
 		"desc": "Displays the top 15 users by edit count.",
 		"aliases": ["top"],
 		"required": "None",
-		"optional": "`sort` the sorting method. Possible values: editcount, registration. Default: editcount.\n`reverse` whether to reverse the sort. Default: False."
+		"optional": "`sort` the sorting method. Possible values: editcount, registration. Default: editcount.\n`limit` how many users to show on leaderboard. Default: 15.\n`reverse` whether to reverse the sort. Default: False."
     },
     {
         "name": "user",
