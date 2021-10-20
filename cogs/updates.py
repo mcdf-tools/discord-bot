@@ -16,16 +16,16 @@ class cog_updates(commands.Cog):
         # moving colour = #d635e8 (➡)
         
         # try and get embed description
+        pagename = ""
         try:
             description = message.embeds[0].description
-        except IndexError:
+            if description[0] == "📄":
+                for i in description.split(')'):
+                    if "has created article" in i:
+                        pagename = i.split('=')[1]
+
+        except (IndexError, TypeError):
             return
-        
-        # ugly way to get the page name
-        if description[0] == "📄":
-            for i in description.split(')'):
-                if "has created article" in i:
-                    pagename = i.split('=')[1]
                     
         # get #page-log channel and send to it
         channel = self.client.get_channel(787102130871861288)
