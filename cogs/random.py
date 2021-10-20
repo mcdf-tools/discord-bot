@@ -13,13 +13,10 @@ class cog_random(commands.Cog):
     
         if "cheese" in message.content.lower():
             await message.add_reaction("🧀")
-    
-    # Responds if it sees something in message
-    @commands.Cog.listener()
-    async def on_message(self, message):
-    
+            
         if "villager" in message.content.lower():
             await message.channel.send("hrmm")
+    
 
 def setup(bot):
     bot.add_cog(cog_random(bot))
