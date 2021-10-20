@@ -24,9 +24,11 @@ class cog_updates(commands.Cog):
                     if "has created article" in i:
                         pagename = i.split('=')[1]
 
-            # get #page-log channel and send to it
-            channel = self.client.get_channel(787102130871861288)
-            await channel.send(f"The page {pagename.replace('_', ' ')} was created! check it out here: https://mcdiscontinued.miraheze.org/wiki/{pagename}")
+                        # get #page-log channel and send to it
+                        channel = self.client.get_channel(787102130871861288)
+                        await channel.send(f"The page {pagename.replace('_', ' ')} was created! check it out here: https://mcdiscontinued.miraheze.org/wiki/{pagename}")
+
+                        return
 
         except (IndexError, TypeError):
             return
