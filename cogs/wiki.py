@@ -12,7 +12,7 @@ class cog_wiki(commands.Cog):
 
 
     @commands.command(name="leaderboard", aliases=["top"])
-    async def top(self, ctx, sort="editcount", reverse=False):
+    async def top(self, ctx, sort="editcount", limit=15, reverse=False):
         
         # make into something closer to what is expected
         sort = sort.lower()
@@ -29,7 +29,7 @@ class cog_wiki(commands.Cog):
         
         # iterate through users to make the description pretty
         description = ""
-        for place, user in enumerate(sorted_users[0:15]):
+        for place, user in enumerate(sorted_users[0:limit]):
             description += f"{place+1}. {user['name']}: {user[sort]}\n"
         
         # create and send embed
@@ -47,7 +47,7 @@ class cog_wiki(commands.Cog):
             return
         
         # query user
-        request = list(self.wiki.query(list="users", ususers=user, usprop="editcount|registration|gender|groups"))[0]
+        request = list(self.wiki.query(list="users", ususers=user, usprop="editcount|registration|groups"))[0]
         
         # if missing key exists, then that user doesn't exist
         try:
@@ -60,7 +60,6 @@ class cog_wiki(commands.Cog):
             embedVar = discord.Embed(color=0xFFFFFF, title=f"Stats for {request['users'][0]['name']}")
             embedVar.add_field(name="Wiki Registration Date", value=request['users'][0]['registration'], inline=False)
             embedVar.add_field(name="Edit Count", value=request['users'][0]['editcount'], inline=False)
-            embedVar.add_field(name="Gender", value=request['users'][0]['gender'], inline=False)
             embedVar.add_field(name="Groups", value=", ".join(request['users'][0]['groups']), inline=False)
             await ctx.send(embed=embedVar)
             
