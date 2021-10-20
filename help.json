@@ -1,0 +1,42 @@
+[
+	{
+		"name": "help",
+		"usage": "`%help [command]`",
+		"desc": "Helps you with commands.",
+		"aliases": [],
+		"required": "None",
+		"optional": "`command` the command you want help with. Default: none."
+	},
+    {
+        "name": "wiki",
+		"usage": "`%wiki`",
+		"desc": "Displays wiki, discord and bot information",
+		"aliases": [],
+		"required": "None",
+		"optional": "None"
+    },
+    {
+        "name": "leaderboard",
+		"usage": "`%leaderboard [sort] [reverse]`",
+		"desc": "Displays the top 15 users by edit count.",
+		"aliases": ["top"],
+		"required": "None",
+		"optional": "`sort` the sorting method. Possible values: editcount, registration. Default: editcount.\n`reverse` whether to reverse the sort. Default: False."
+    },
+    {
+        "name": "user",
+		"usage": "`%user <username>`",
+		"desc": "Gets information about a wiki user.",
+		"aliases": [],
+		"required": "`username` the user to look up.",
+		"optional": "None"
+    },
+    {
+        "name": "page",
+		"usage": "`%page <pagename>`",
+		"desc": "Links the page specified",
+		"aliases": [],
+		"required": "`pagename` the name of the page to look up.",
+		"optional": "None"
+    }
+]
