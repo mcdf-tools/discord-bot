@@ -31,7 +31,7 @@ async def on_command_error(ctx, error):
         return
     # Something else broke
     else:
-        await ctx.send(f"Something broke. Error:\n`{error}`", delete_after=10)
+        await ctx.send(f"Something broke. Error:\n`{error}`")
         print(error)
 
 def load_cogs():
