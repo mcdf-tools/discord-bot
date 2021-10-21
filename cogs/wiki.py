@@ -8,7 +8,11 @@ class cog_wiki(commands.Cog):
     def __init__(self, client):
         self.client = client
         self.wiki = wikipedia("mcdiscontinued", "miraheze")
+        self.wiki.login("UnobtainedBot","kJuBFJQsX27NR7y")
         self.db = None # TODO: replace with some kind of database (mongodb?)
+
+    def getTokens(self, type="csrf"):
+        return list(self.wiki.query(meta="tokens",type=type))[0].tokens
 
 
     @commands.command(name="leaderboard", aliases=["top"])
