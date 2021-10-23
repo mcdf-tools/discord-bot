@@ -25,11 +25,11 @@
     },
     {
         "name": "user",
-		"usage": "`%user <username>`",
+		"usage": "`%user [username]`",
 		"desc": "Gets information about a wiki user.",
 		"aliases": [],
-		"required": "`username` the user to look up.",
-		"optional": "None"
+		"required": "None",
+		"optional": "`username` the user to look up. Can be an @ or wiki username. Default: linked user wiki name."
     },
     {
         "name": "page",

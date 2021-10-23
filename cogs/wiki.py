@@ -45,28 +45,42 @@ class cog_wiki(commands.Cog):
     @commands.command(name="user", aliases=[])
     async def user(self, ctx, user=None):
         
-        # check if user has been specified a user
-        # TODO: make it so if no user is specified use the linked user
+        # check if user has been specified a user, then search database for them
         if user == None:
-            await ctx.send("Please specify a user!")
-            return
-        
+            db_request = list(self.db.users.find({'discord_id': ctx.author.id}))
+
+            if len(db_request) == 0:
+                await ctx.send(f"Please specify a user! Otherwise, register with the bot with %link.")
+                return
+            
+            # set user to wiki name of registered user
+            user = db_request[0]['wiki_name']
+
+        # check if a user was mentioned
+        elif user[0:3] == "<@!" and user[-1] == ">":
+            db_request = list(self.db.users.find({'discord_id': int(user[3:-1])}))
+            
+            if len(db_request) == 0:
+                await ctx.send(f"That user has not registered with the bot yet.")
+                return
+            
+            # set user to wiki name of registered user
+            user = db_request[0]['wiki_name']
+
         # query user
         request = list(self.wiki.query(list="users", ususers=user, usprop="editcount|registration|groups"))[0]
         
-        # if missing key exists, then that user doesn't exist
+        # if this fails then the user doesn't exist
         try:
-            request['users'][0]['missing']
-            await ctx.send("That user doesn't exist!")
-            return
-        
-        # otherwise create and send embed with prop values
-        except KeyError:
             embedVar = discord.Embed(color=0xFFFFFF, title=f"Stats for {request['users'][0]['name']}")
             embedVar.add_field(name="Wiki Registration Date", value=request['users'][0]['registration'], inline=False)
             embedVar.add_field(name="Edit Count", value=request['users'][0]['editcount'], inline=False)
             embedVar.add_field(name="Groups", value=", ".join(request['users'][0]['groups']), inline=False)
             await ctx.send(embed=embedVar)
+        
+        # other wise send does not exist error
+        except KeyError:
+            await ctx.send("That user doesn't exist!")
             
         
     @commands.command(name="page", aliases=[])
