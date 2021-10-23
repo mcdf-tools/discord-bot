@@ -2,18 +2,19 @@
 from pywikiapi import wikipedia
 from discord.ext import commands
 import discord
+import pymongo
 
 class cog_wiki(commands.Cog):
 
     def __init__(self, client):
         self.client = client
         self.wiki = wikipedia("mcdiscontinued", "miraheze")
-        self.wiki.login("UnobtainedBot","kJuBFJQsX27NR7y")
-        self.db = None # TODO: replace with some kind of database (mongodb?)
+        self.wiki.login("UnobtainedBot", "kJuBFJQsX27NR7y")
+        mongodb = pymongo.MongoClient("mongodb+srv://user:y8QOlhZ60VIexhKd@mcdiscontinued.qhbkk.mongodb.net/myFirstDatabase?retryWrites=true&w=majority")
+        self.db = mongodb.mc
 
     def getTokens(self, type="csrf"):
-        return list(self.wiki.query(meta="tokens",type=type))[0].tokens
-
+        return list(self.wiki.query(meta="tokens", type=type))[0].tokens
 
     @commands.command(name="leaderboard", aliases=["top"])
     async def top(self, ctx, sort="editcount", limit=15, reverse=False):
@@ -92,12 +93,50 @@ class cog_wiki(commands.Cog):
     @commands.command(name="link", aliases=[])
     async def link(self, ctx, user=None):
 
+        # if a user isnt specified
         if user == None:
-            await ctx.send("Please specify a user!")
+            await ctx.send("Please specify a wiki user to link to!")
             return
+
+        # wikis capitalise only the first letter
+        user = user[0].upper() + user[1:]
+
+        # check if wiki user in the database
+        db_request = list(self.db.users.find({'wiki_name': user}))
+
+        if len(db_request) > 0:
+            await ctx.send(f"{user} has already registered with the bot! If this was a mistake, please contact the mods so they can fix this for you.")
+            return
+
+        # check if discord user in the database
+        db_request = list(self.db.users.find({'discord_id':ctx.author.id}))
+
+        if len(db_request) > 0:
+            await ctx.send(f"You have already registered with the bot! If this was a mistake, please contact the mods so they can fix this for you.")
+            return
+
+        # make sure user exists on the wiki
+        request = list(self.wiki.query(list="users", ususers=user))[0]
+
+        # if missing key exists, then that user doesn't exist
+        try:
+            request['users'][0]['missing']
+            await ctx.send("That user doesn't exist!")
+            return
+
+        except:
+            wiki_name = request['users'][0]['name']
+
+        # create and store user dict in db
+        user_dict = {
+            'discord_id': ctx.author.id,
+            'discord_name': ctx.author.name,
+            'wiki_name': wiki_name,
+        }
         
-        await ctx.send(f"Unsucessfully linked {user}!")
-        
+        self.db.users.insert_one(user_dict)
+
+        await ctx.send(f"Linked discord user {ctx.author.name} to wiki user {wiki_name}!")
         
         
 def setup(bot):
