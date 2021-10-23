@@ -150,7 +150,6 @@ class cog_wiki(commands.Cog):
         
         # query search
         request = list(self.wiki.query(list="search", srnamespace="*", srsearch=page, srlimit=1, srwhat="title"))[0]
-        print(request)
         
         # send the page
         try:
