@@ -18,7 +18,7 @@
     {
         "name": "leaderboard",
 		"usage": "`%leaderboard [sort] [limit] [reverse]`",
-		"desc": "Displays the top 15 users by edit count.",
+		"desc": "Displays the top users by sort of the wiki.",
 		"aliases": ["top"],
 		"required": "None",
 		"optional": "`sort` the sorting method. Possible values: editcount, registration. Default: editcount.\n`limit` how many users to show on leaderboard. Default: 15.\n`reverse` whether to reverse the sort. Default: False."
