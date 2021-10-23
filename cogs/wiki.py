@@ -24,6 +24,10 @@ class cog_wiki(commands.Cog):
         # create colour = #36a1e8 (📄)
         # deletion colour = #e83535 (❌)
         # moving colour = #d635e8 (➡)
+
+        # editor = 843358516936704042
+        # loyalty = 868373753191628830
+        # addict = 868373926407966730
         
         # try and get embed description
         try:
@@ -33,13 +37,36 @@ class cog_wiki(commands.Cog):
             if description[0] == "📄":
                 wiki_page = description.split('has created article [')[1].split(']')[0]
                 channel = self.client.get_channel(787102130871861288)
-                await channel.send(f"The page {wiki_page.replace('_', ' ')} was created! check it out here: https://mcdiscontinued.miraheze.org/wiki/{wiki_page}")
+                await channel.send(f"The page {wiki_page.replace('_', ' ')} was created! check it out here: https://mcdiscontinued.miraheze.org/wiki/{wiki_page.replace(' ', '_')}")
                 return
 
             # for edits
             if description[0] == "📝":
                 wiki_name = description.split('[')[1].split(']')[0]
+                db_request = list(self.db.users.find({'wiki_name': wiki_name}))
+                
+                # wiki user doesn't exist in the database
+                if len(db_request) == 0:
+                    return
+
+                # update database my incrementing wiki_editcount
                 self.db.users.update_one({'wiki_name': wiki_name}, {'$inc': {'wiki_editcount': 1}})
+
+                # update roles
+                member = await message.guild.fetch_member(db_request[0]['discord_id'])
+                
+                if db_request[0]['wiki_editcount'] >= 1:
+                    role = message.guild.get_role(843358516936704042)
+                    await member.add_roles(role)
+
+                if db_request[0]['wiki_editcount'] >= 1000:
+                    role = message.guild.get_role(868373753191628830)
+                    await member.add_roles(role)
+
+                if db_request[0]['wiki_editcount'] >= 5000:
+                    role = message.guild.get_role(868373926407966730)
+                    await member.add_roles(role)
+
                 return
 
         except (IndexError, TypeError):
