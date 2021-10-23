@@ -130,22 +130,23 @@ class cog_wiki(commands.Cog):
             return
 
         # make sure user exists on the wiki
-        request = list(self.wiki.query(list="users", ususers=user))[0]
+        request = list(self.wiki.query(list="users", ususers=user, usprop="editcount"))[0]
 
-        # if missing key exists, then that user doesn't exist
+        # if this fails then the user doesn't exist
         try:
-            request['users'][0]['missing']
+            wiki_name = request['users'][0]['name']
+            wiki_editcount = request['users'][0]['editcount']
+
+        except KeyError:
             await ctx.send("That user doesn't exist!")
             return
-
-        except:
-            wiki_name = request['users'][0]['name']
 
         # create and store user dict in db
         user_dict = {
             'discord_id': ctx.author.id,
             'discord_name': ctx.author.name,
             'wiki_name': wiki_name,
+            'wiki_editcount': wiki_editcount,
         }
         
         self.db.users.insert_one(user_dict)
