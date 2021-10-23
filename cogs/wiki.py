@@ -135,7 +135,7 @@ class cog_wiki(commands.Cog):
         # if this fails then the user doesn't exist
         try:
             wiki_name = request['users'][0]['name']
-            wiki_editcount = request['users'][0]['editcount']
+            editcount = request['users'][0]['editcount']
 
         except KeyError:
             await ctx.send("That user doesn't exist!")
@@ -146,7 +146,7 @@ class cog_wiki(commands.Cog):
             'discord_id': ctx.author.id,
             'discord_name': ctx.author.name,
             'wiki_name': wiki_name,
-            'wiki_editcount': wiki_editcount,
+            'editcount': editcount,
         }
         
         self.db.users.insert_one(user_dict)
