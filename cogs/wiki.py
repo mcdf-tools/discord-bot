@@ -13,8 +13,38 @@ class cog_wiki(commands.Cog):
         mongodb = pymongo.MongoClient("mongodb+srv://user:y8QOlhZ60VIexhKd@mcdiscontinued.qhbkk.mongodb.net/myFirstDatabase?retryWrites=true&w=majority")
         self.db = mongodb.mc
 
+
     def getTokens(self, type="csrf"):
         return list(self.wiki.query(meta="tokens", type=type))[0].tokens
+
+
+    @commands.Cog.listener()
+    async def on_message(self, message):
+        # edit colour = #2daf32 (📝)
+        # create colour = #36a1e8 (📄)
+        # deletion colour = #e83535 (❌)
+        # moving colour = #d635e8 (➡)
+        
+        # try and get embed description
+        try:
+            description = message.embeds[0].description
+
+            # for new pages
+            if description[0] == "📄":
+                wiki_page = description.split('has created article [')[1].split(']')[0]
+                channel = self.client.get_channel(787102130871861288)
+                await channel.send(f"The page {wiki_page.replace('_', ' ')} was created! check it out here: https://mcdiscontinued.miraheze.org/wiki/{wiki_page}")
+                return
+
+            # for edits
+            if description[0] == "📝":
+                wiki_name = description.split('[')[1].split(']')[0]
+                self.db.users.update_one({'wiki_name': wiki_name}, {'$inc': {'wiki_editcount': 1}})
+                return
+
+        except (IndexError, TypeError):
+            return
+
 
     @commands.command(name="leaderboard", aliases=["top"])
     async def top(self, ctx, sort="editcount", limit=15, reverse=False):
