@@ -1,3 +1,3 @@
 
-# Current using the '''MC Discontinued Test Bot''' token
-DISCORD_TOKEN = "OTAwMjQxMzE1NTMzNTc0MTk0.YW-dDw.AHKg72Efz7P6ZTIfddxtg7AJSlg"
+# Current using the '''Minecraft Discontinued Features Bot''' token
+DISCORD_TOKEN = "08R2h4juGbzd_5SHhpPo_v7_zL_96Fpy"
