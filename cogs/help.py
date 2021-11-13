@@ -14,6 +14,7 @@ class cog_help(commands.Cog):
         self.help = json.load(open(f"help.json", 'r'))
 
     @commands.command(name="help", aliases=[])
+    @commands.cooldown(1, 15, commands.BucketType.user)
     async def help(self, ctx, command=None):
 
         # If no specific command was chosen
@@ -44,6 +45,7 @@ class cog_help(commands.Cog):
         
         
     @commands.command(name="wiki", aliases=[])
+    @commands.cooldown(1, 15, commands.BucketType.user)
     async def wiki(self, ctx):
         embedVar = discord.Embed(color=embed_color, title="MC Disontinued Wiki Info")
         embedVar.add_field(name="Wiki", value="https://mcdiscontinued.miraheze.org/", inline=False)

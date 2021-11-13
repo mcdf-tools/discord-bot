@@ -76,6 +76,7 @@ class cog_wiki(commands.Cog):
 
 
     @commands.command(name="leaderboard", aliases=["top"])
+    @commands.cooldown(1, 15, commands.BucketType.user)
     async def top(self, ctx, sort="editcount", limit=15, reverse=False):
         
         # make into something closer to what is expected
@@ -102,6 +103,7 @@ class cog_wiki(commands.Cog):
         
         
     @commands.command(name="user", aliases=[])
+    @commands.cooldown(1, 15, commands.BucketType.user)
     async def user(self, ctx, user=None):
         
         # check if user has been specified a user, then search database for them
@@ -143,6 +145,7 @@ class cog_wiki(commands.Cog):
             
         
     @commands.command(name="page", aliases=[])
+    @commands.cooldown(1, 15, commands.BucketType.user)
     async def page(self, ctx, *, page=None):
         
         # check if user has specified a page
@@ -163,6 +166,7 @@ class cog_wiki(commands.Cog):
             
             
     @commands.command(name="link", aliases=[])
+    @commands.cooldown(1, 15, commands.BucketType.user)
     async def link(self, ctx, user=None):
 
         # if a user isnt specified
