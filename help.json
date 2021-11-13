@@ -38,5 +38,13 @@
 		"aliases": [],
 		"required": "`pagename` the name of the page to look up.",
 		"optional": "None"
+    },
+	{
+        "name": "link",
+		"usage": "`%link <username>`",
+		"desc": "Links the specified username.",
+		"aliases": [],
+		"required": "`username` the wiki username to link your discord account to.",
+		"optional": "None"
     }
 ]

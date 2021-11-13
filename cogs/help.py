@@ -4,8 +4,8 @@ import discord, json
 
 # Customise how the embed looks
 footer_text = "MC Discontinued Test Bot"
-thumbnail_image = "https://static.miraheze.org/mcdiscontinuedwiki/2/21/Missing_Texture_Block.png"
-embed_color = 0xF300F3
+thumbnail_image = "https://static.miraheze.org/mcdiscontinuedwiki/2/24/Main_Page_Logo_%282021_Update%29.png"
+embed_color = 0x407467
 
 class cog_help(commands.Cog):
 
@@ -42,7 +42,7 @@ class cog_help(commands.Cog):
         embedVar = discord.Embed(color=embed_color, title="MC Disontinued Wiki Info")
         embedVar.add_field(name="Wiki", value="https://mcdiscontinued.miraheze.org/", inline=False)
         embedVar.add_field(name="Discord", value="https://discord.gg/n7v7pgE", inline=False)
-        embedVar.add_field(name="Bot", value="link private for now", inline=False)
+        embedVar.add_field(name="Github", value="https://github.com/Minecraft-Discontinued-Features/", inline=False)
         embedVar.set_thumbnail(url=thumbnail_image)
         embedVar.set_footer(text=footer_text)
         await ctx.send(embed=embedVar)
