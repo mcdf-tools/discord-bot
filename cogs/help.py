@@ -23,6 +23,10 @@ class cog_help(commands.Cog):
             for help in self.help:
                 embedVar.add_field(name=help['usage'], value=help['desc'], inline=False)
 
+            embedVar.set_thumbnail(url=thumbnail_image)
+            embedVar.set_footer(text=footer_text)
+            await ctx.send(embed=embedVar)
+
         # For specific commands
         else:
             for help in self.help:
@@ -32,9 +36,9 @@ class cog_help(commands.Cog):
                     embedVar.add_field(name="Required Arguments", value=help['required'], inline=False)
                     embedVar.add_field(name="Optional Arguments", value=help['optional'], inline=False)
 
-        embedVar.set_thumbnail(url=thumbnail_image)
-        embedVar.set_footer(text=footer_text)
-        await ctx.send(embed=embedVar)
+            embedVar.set_thumbnail(url=thumbnail_image)
+            embedVar.set_footer(text=footer_text)
+            await ctx.send(embed=embedVar)
         
         
     @commands.command(name="wiki", aliases=[])
