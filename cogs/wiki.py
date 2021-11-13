@@ -49,21 +49,23 @@ class cog_wiki(commands.Cog):
                 if len(db_request) == 0:
                     return
 
-                # update database my incrementing wiki_editcount
-                self.db.users.update_one({'wiki_name': wiki_name}, {'$inc': {'wiki_editcount': 1}})
+                # update database by querying wiki for editcount
+                request = list(self.wiki.query(list="users", ususers=wiki_name, usprop="editcount"))[0]
+                editcount = request['users'][0]['editcount']
+                self.db.users.update_one({'wiki_name': wiki_name}, {'$set': {'editcount': editcount}})
 
                 # update roles
                 member = await message.guild.fetch_member(db_request[0]['discord_id'])
                 
-                if db_request[0]['wiki_editcount'] >= 1:
+                if db_request[0]['editcount'] >= 1:
                     role = message.guild.get_role(843358516936704042)
                     await member.add_roles(role)
 
-                if db_request[0]['wiki_editcount'] >= 1000:
+                if db_request[0]['editcount'] >= 1000:
                     role = message.guild.get_role(868373753191628830)
                     await member.add_roles(role)
 
-                if db_request[0]['wiki_editcount'] >= 5000:
+                if db_request[0]['editcount'] >= 5000:
                     role = message.guild.get_role(868373926407966730)
                     await member.add_roles(role)
 
