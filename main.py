@@ -1,7 +1,9 @@
 
 from discord.ext import commands
 import discord, os
-from tokens import *
+from dotenv import load_dotenv
+
+load_dotenv('.env')
 
 # Initialise bot
 bot = commands.Bot(command_prefix="%")
@@ -42,4 +44,4 @@ def load_cogs():
 
 # Run bot
 load_cogs()
-bot.run(DISCORD_TOKEN)
+bot.run(os.environ.get("DISCORD_TOKEN"))

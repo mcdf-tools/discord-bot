@@ -3,14 +3,15 @@ from pywikiapi import wikipedia
 from discord.ext import commands
 import discord
 import pymongo
+import os
 
 class cog_wiki(commands.Cog):
 
     def __init__(self, client):
         self.client = client
         self.wiki = wikipedia("mcdiscontinued", "miraheze")
-        self.wiki.login("UnobtainedBot", "kJuBFJQsX27NR7y")
-        mongodb = pymongo.MongoClient("mongodb+srv://user:y8QOlhZ60VIexhKd@mcdiscontinued.qhbkk.mongodb.net/myFirstDatabase?retryWrites=true&w=majority")
+        self.wiki.login(os.environ.get("WIKI_USERNAME"), os.environ.get("WIKI_PASSWORD"))
+        mongodb = pymongo.MongoClient(os.environ.get("DB_TOKEN"))
         self.db = mongodb.mc
 
 
