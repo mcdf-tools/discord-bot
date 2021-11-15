@@ -10,7 +10,6 @@ class cog_help(commands.Cog):
         self.help = json.load(open(f"help.json", 'r'))
 
         # Customise how the embed looks
-        self.footer_text = "Minecraft Discontinued Features Bot"
         self.thumbnail_image = "https://static.miraheze.org/mcdiscontinuedwiki/6/60/Wiki_Icon.png"
         self.embed_color = 0x407467
 
@@ -22,7 +21,6 @@ class cog_help(commands.Cog):
         if command == None:
             embedVar = discord.Embed(color=self.embed_color, title="Command List:")
             embedVar.set_thumbnail(url=self.thumbnail_image)
-            embedVar.set_footer(text=self.footer_text)
             
             # Add commands to help message
             for help in self.help:
@@ -38,7 +36,6 @@ class cog_help(commands.Cog):
                     # Create embed
                     embedVar = discord.Embed(color=self.embed_color, title=help['usage'], description=help['desc'])
                     embedVar.set_thumbnail(url=self.thumbnail_image)
-                    embedVar.set_footer(text=self.footer_text)
 
                     # Add fields
                     embedVar.add_field(name="Aliases", value=f"`{'` `'.join(help['aliases'])}`" if len(help['aliases']) else "None", inline=False)
