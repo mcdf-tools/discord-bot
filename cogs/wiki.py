@@ -156,7 +156,7 @@ class cog_wiki(commands.Cog):
             await ctx.send("That user doesn't exist!")
             
         
-    @commands.command(name="page", aliases=[])
+    @commands.command(name="page", aliases=["search", "pagesearch"])
     @commands.cooldown(1, 5, commands.BucketType.user)
     async def page(self, ctx, *, page=None):
         
@@ -164,9 +164,9 @@ class cog_wiki(commands.Cog):
         if page == None:
             await ctx.send("Please specify a page!")
             return
-        
+
         # Query search
-        request = list(self.wiki.query(list="search", srnamespace="*", srsearch=page, srlimit=1, srwhat="title"))[0]
+        request = list(self.wiki.query(list="search", srnamespace="3000|3002|3004", srsearch=page, srlimit=1, srwhat="title"))[0]
         
         # Send the page
         try:
@@ -175,6 +175,27 @@ class cog_wiki(commands.Cog):
         # If it doesn't exist then send no page found
         except (KeyError, IndexError):
             await ctx.send("No page like that exists!")
+
+
+    @commands.command(name="image", aliases=["imagesearch", "file"])
+    @commands.cooldown(1, 5, commands.BucketType.user)
+    async def image(self, ctx, *, page=None):
+        
+        # Check if user has specified a page
+        if page == None:
+            await ctx.send("Please specify an image!")
+            return
+
+        # Query search
+        request = list(self.wiki.query(list="search", srnamespace="6", srsearch=page, srlimit=1, srwhat="title"))[0]
+        
+        # Send the image
+        try:
+            await ctx.send(f"https://mcdiscontinued.miraheze.org/wiki/{request['search'][0]['title'].replace(' ', '_')}")
+        
+        # If it doesn't exist then send no image found
+        except (KeyError, IndexError):
+            await ctx.send("No image like that exists!")
             
             
     @commands.command(name="linkaccount", aliases=["link"])
