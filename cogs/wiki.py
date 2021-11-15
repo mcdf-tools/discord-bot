@@ -8,54 +8,64 @@ import os
 class cog_wiki(commands.Cog):
 
     def __init__(self, client):
+
         self.client = client
         self.wiki = wikipedia("mcdiscontinued", "miraheze")
         self.wiki.login(os.environ.get("WIKI_USERNAME"), os.environ.get("WIKI_PASSWORD"))
         mongodb = pymongo.MongoClient(os.environ.get("DB_TOKEN"))
         self.db = mongodb.mc
 
-
-    def getTokens(self, type="csrf"):
-        return list(self.wiki.query(meta="tokens", type=type))[0].tokens
+        # Customise how the embed looks
+        self.thumbnail_image = "https://static.miraheze.org/mcdiscontinuedwiki/6/60/Wiki_Icon.png"
+        self.embed_color = 0x407467
 
 
     @commands.Cog.listener()
     async def on_message(self, message):
-        # edit colour = #2daf32 (📝)
-        # create colour = #36a1e8 (📄)
-        # deletion colour = #e83535 (❌)
-        # moving colour = #d635e8 (➡)
 
-        # editor = 843358516936704042
-        # loyalty = 868373753191628830
-        # addict = 868373926407966730
+        # Discord role IDs
+        editor_role = 843358516936704042
+        loyalty_role = 868373753191628830
+        addict_role = 868373926407966730
+
+        # Embed colour values
+        edit_colour = 0x2daf32
+        create_colour = 0x36a1e8
+        delete_colour = 0xe83535
+        move_colour = 0xd635e8
+
+        # Embed emoji text values
+        edit_emoji = '📝'
+        create_emoji = '📄'
+        delete_emoji = '❌'
+        move_emoji = '➡'
         
-        # try and get embed description
+        # Try and get embed description
         try:
             description = message.embeds[0].description
 
-            # for new pages
-            if description[0] == "📄":
+            # For new pages
+            if description[0] == create_emoji:
                 wiki_page = description.split('has created article [')[1].split(']')[0]
                 channel = self.client.get_channel(787102130871861288)
                 await channel.send(f"The page {wiki_page.replace('_', ' ')} was created! check it out here: https://mcdiscontinued.miraheze.org/wiki/{wiki_page.replace(' ', '_')}")
                 return
 
-            # for edits
-            if description[0] == "📝":
+            # For edits
+            if description[0] == edit_emoji:
                 wiki_name = description.split('[')[1].split(']')[0]
                 db_request = list(self.db.users.find({'wiki_name': wiki_name}))
                 
-                # wiki user doesn't exist in the database
+                # Wiki user doesn't exist in the database
                 if len(db_request) == 0:
                     return
 
-                # update database by querying wiki for editcount
+                # Update database by querying wiki for editcount
                 request = list(self.wiki.query(list="users", ususers=wiki_name, usprop="editcount"))[0]
                 editcount = request['users'][0]['editcount']
                 self.db.users.update_one({'wiki_name': wiki_name}, {'$set': {'editcount': editcount}})
 
-                # update roles
+                # Update roles
                 member = await message.guild.fetch_member(db_request[0]['discord_id'])
                 
                 if db_request[0]['editcount'] >= 25:
@@ -63,11 +73,11 @@ class cog_wiki(commands.Cog):
                     await member.add_roles(role)
 
                 if db_request[0]['editcount'] >= 1000:
-                    role = message.guild.get_role(868373753191628830)
+                    role = message.guild.get_role(loyalty_role)
                     await member.add_roles(role)
 
                 if db_request[0]['editcount'] >= 5000:
-                    role = message.guild.get_role(868373926407966730)
+                    role = message.guild.get_role(addict_role)
                     await member.add_roles(role)
 
                 return
@@ -77,48 +87,48 @@ class cog_wiki(commands.Cog):
 
 
     @commands.command(name="leaderboard", aliases=["top"])
-    @commands.cooldown(1, 15, commands.BucketType.user)
+    @commands.cooldown(1, 5, commands.BucketType.user)
     async def top(self, ctx, sort="editcount", limit=15, reverse=False):
         
-        # make into something closer to what is expected
+        # Make into something closer to what is expected
         sort = sort.lower()
         reverse = bool(reverse)
         
-        # make sure its a valid sort
+        # Make sure its a valid sort
         if not sort in ["editcount", "registration"]:
             await ctx.send("Invalid sort! see `%help leaderboard` for valid arguments")
             return
         
-        # query and sort all users who have an edit
+        # Query and sort all users who have an edit
         all_users = list(self.wiki.query(list="allusers", auprop="editcount|registration", aulimit=500, auwitheditsonly=True))[0]['allusers']
         sorted_users = sorted(all_users, key=lambda d: d[sort], reverse=not(reverse)) # not reverse to make it more relevant
         
-        # iterate through users to make the description pretty
+        # Iterate through users to make the description pretty
         description = ""
         for place, user in enumerate(sorted_users[0:limit]):
             description += f"{place+1}. {user['name']}: {user[sort]}\n"
         
-        # create and send embed
-        embedVar = discord.Embed(color=0xFFFFFF, title=f"Top Wiki Editors by {sort.title()}:", description=description)
+        # Create and send embed
+        embedVar = discord.Embed(color=self.embed_color, title=f"Top Wiki Editors by {sort.title()}:", description=description)
         await ctx.send(embed=embedVar)
         
         
     @commands.command(name="user", aliases=[])
-    @commands.cooldown(1, 15, commands.BucketType.user)
+    @commands.cooldown(1, 5, commands.BucketType.user)
     async def user(self, ctx, user=None):
         
-        # check if user has been specified a user, then search database for them
+        # Check if user has been specified a user, then search database for them
         if user == None:
             db_request = list(self.db.users.find({'discord_id': ctx.author.id}))
 
             if len(db_request) == 0:
-                await ctx.send(f"Please specify a user! Otherwise, register with the bot with %link.")
+                await ctx.send(f"Please specify a user! Otherwise, register with the bot with `%linkaccount`.")
                 return
             
-            # set user to wiki name of registered user
+            # Set user to wiki name of registered user
             user = db_request[0]['wiki_name']
 
-        # check if a user was mentioned
+        # Check if a user was mentioned
         elif user[0:3] == "<@!" and user[-1] == ">":
             db_request = list(self.db.users.find({'discord_id': int(user[3:-1])}))
             
@@ -126,76 +136,77 @@ class cog_wiki(commands.Cog):
                 await ctx.send(f"That user has not registered with the bot yet.")
                 return
             
-            # set user to wiki name of registered user
+            # Set user to wiki name of registered user
             user = db_request[0]['wiki_name']
 
-        # query user
+        # Query user
         request = list(self.wiki.query(list="users", ususers=user, usprop="editcount|registration|groups"))[0]
         
-        # if this fails then the user doesn't exist
+        # Ff this fails then the user doesn't exist
         try:
-            embedVar = discord.Embed(color=0xFFFFFF, title=f"Stats for {request['users'][0]['name']}")
+            embedVar = discord.Embed(color=self.embed_color, title=f"Stats for {request['users'][0]['name']}")
             embedVar.add_field(name="Wiki Registration Date", value=request['users'][0]['registration'], inline=False)
             embedVar.add_field(name="Edit Count", value=request['users'][0]['editcount'], inline=False)
             embedVar.add_field(name="Groups", value=", ".join(request['users'][0]['groups']), inline=False)
+
             await ctx.send(embed=embedVar)
         
-        # other wise send does not exist error
+        # Other wise send does not exist error
         except KeyError:
             await ctx.send("That user doesn't exist!")
             
         
     @commands.command(name="page", aliases=[])
-    @commands.cooldown(1, 15, commands.BucketType.user)
+    @commands.cooldown(1, 5, commands.BucketType.user)
     async def page(self, ctx, *, page=None):
         
-        # check if user has specified a page
+        # Check if user has specified a page
         if page == None:
             await ctx.send("Please specify a page!")
             return
         
-        # query search
+        # Query search
         request = list(self.wiki.query(list="search", srnamespace="*", srsearch=page, srlimit=1, srwhat="title"))[0]
         
-        # send the page
+        # Send the page
         try:
             await ctx.send(f"https://mcdiscontinued.miraheze.org/wiki/{request['search'][0]['title'].replace(' ', '_')}")
         
-        # if it doesn't exist then send no page found
+        # If it doesn't exist then send no page found
         except (KeyError, IndexError):
             await ctx.send("No page like that exists!")
             
             
-    @commands.command(name="linkAccount", aliases=[])
-    @commands.cooldown(1, 15, commands.BucketType.user)
+    @commands.command(name="linkaccount", aliases=["link"])
+    @commands.cooldown(1, 5, commands.BucketType.user)
     async def link(self, ctx, user=None):
 
-        # if a user isnt specified
+        # If a user isnt specified
         if user == None:
             await ctx.send("Please specify a wiki user to link to!")
             return
 
-        # wikis capitalise only the first letter
+        # Wikis capitalise only the first letter
         user = user[0].upper() + user[1:]
 
-        # check if wiki user in the database
+        # Check if wiki user in the database
         db_request = list(self.db.users.find({'wiki_name': user}))
 
         if len(db_request) > 0:
             await ctx.send(f"{user} has already registered with the bot! If this was a mistake, please contact the mods so they can fix this for you.")
             return
 
-        # check if discord user in the database
+        # Check if discord user in the database
         db_request = list(self.db.users.find({'discord_id':ctx.author.id}))
 
         if len(db_request) > 0:
             await ctx.send(f"You have already registered with the bot! If this was a mistake, please contact the mods so they can fix this for you.")
             return
 
-        # make sure user exists on the wiki
+        # Make sure user exists on the wiki
         request = list(self.wiki.query(list="users", ususers=user, usprop="editcount"))[0]
 
-        # if this fails then the user doesn't exist
+        # If this fails then the user doesn't exist
         try:
             wiki_name = request['users'][0]['name']
             editcount = request['users'][0]['editcount']
@@ -204,7 +215,7 @@ class cog_wiki(commands.Cog):
             await ctx.send("That user doesn't exist!")
             return
 
-        # create and store user dict in db
+        # Create and store user dict in db
         user_dict = {
             'discord_id': ctx.author.id,
             'discord_name': ctx.author.name,

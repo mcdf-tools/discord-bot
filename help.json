@@ -11,7 +11,7 @@
         "name": "links",
 		"usage": "`%links`",
 		"desc": "Displays links for various projects and community platforms",
-		"aliases": [],
+		"aliases": ["info", "wiki"],
 		"required": "None",
 		"optional": "None"
     },
@@ -40,10 +40,10 @@
 		"optional": "None"
     },
 	{
-        "name": "linkAccount",
-		"usage": "`%linkAccount <username>`",
+        "name": "linkaccount",
+		"usage": "`%linkaccount <username>`",
 		"desc": "Links the specified username.",
-		"aliases": [],
+		"aliases": ["link"],
 		"required": "`username` the wiki username to link your discord account to.",
 		"optional": "None"
     }
