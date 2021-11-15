@@ -44,7 +44,7 @@ class cog_help(commands.Cog):
                     await ctx.send(embed=embedVar)
         
         
-    @commands.command(name="wiki", aliases=[])
+    @commands.command(name="links", aliases=[])
     @commands.cooldown(1, 15, commands.BucketType.user)
     async def wiki(self, ctx):
         embedVar = discord.Embed(color=embed_color, title="MC Disontinued Wiki Info")
