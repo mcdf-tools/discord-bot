@@ -3,7 +3,7 @@ from discord.ext import commands
 import discord, json
 
 # Customise how the embed looks
-footer_text = "MC Discontinued Test Bot"
+footer_text = "MC Discontinued Bot"
 thumbnail_image = "https://static.miraheze.org/mcdiscontinuedwiki/2/24/Main_Page_Logo_%282021_Update%29.png"
 embed_color = 0x407467
 
