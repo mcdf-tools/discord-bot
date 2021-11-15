@@ -8,10 +8,10 @@
 		"optional": "`command` the command you want help with. Default: none."
 	},
     {
-        "name": "wiki",
-		"usage": "`%wiki`",
-		"desc": "Displays wiki, discord and bot information.",
-		"aliases": ["info"],
+        "name": "info",
+		"usage": "`%info`",
+		"desc": "Displays information about the Minecraft Discontinued Wiki and its community.",
+		"aliases": ["wiki"],
 		"required": "None",
 		"optional": "None"
     },
