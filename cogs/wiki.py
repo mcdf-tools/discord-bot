@@ -177,7 +177,7 @@ class cog_wiki(commands.Cog):
             await ctx.send("No page like that exists!")
             
             
-    @commands.command(name="link", aliases=[])
+    @commands.command(name="linkAccount", aliases=[])
     @commands.cooldown(1, 15, commands.BucketType.user)
     async def link(self, ctx, user=None):
 

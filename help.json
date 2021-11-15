@@ -8,10 +8,10 @@
 		"optional": "`command` the command you want help with. Default: none."
 	},
     {
-        "name": "info",
-		"usage": "`%info`",
-		"desc": "Displays information about the Minecraft Discontinued Wiki and its community.",
-		"aliases": ["wiki"],
+        "name": "links",
+		"usage": "`%links`",
+		"desc": "Displays links for various projects and community platforms",
+		"aliases": ["info", "wiki"],
 		"required": "None",
 		"optional": "None"
     },
@@ -40,8 +40,8 @@
 		"optional": "None"
     },
 	{
-        "name": "link",
-		"usage": "`%link <username>`",
+        "name": "linkAccount",
+		"usage": "`%linkAccount <username>`",
 		"desc": "Links the specified username.",
 		"aliases": [],
 		"required": "`username` the wiki username to link your discord account to.",
