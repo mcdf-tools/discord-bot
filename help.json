@@ -11,7 +11,7 @@
         "name": "wiki",
 		"usage": "`%wiki`",
 		"desc": "Displays wiki, discord and bot information.",
-		"aliases": [],
+		"aliases": ["info"],
 		"required": "None",
 		"optional": "None"
     },
