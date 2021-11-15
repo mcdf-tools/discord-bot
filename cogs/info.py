@@ -12,7 +12,7 @@ class cog_info(commands.Cog):
         self.thumbnail_image = "https://static.miraheze.org/mcdiscontinuedwiki/6/60/Wiki_Icon.png"
         self.embed_color = 0x407467
         
-    @commands.command(name="info", aliases=["wiki"])
+    @commands.command(name="links", aliases=["info", "wiki"])
     @commands.cooldown(1, 5, commands.BucketType.user)
     async def wiki(self, ctx):
 
