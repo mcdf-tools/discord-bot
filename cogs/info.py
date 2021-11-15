@@ -1,6 +1,6 @@
 
 from discord.ext import commands
-import discord, json
+import discord
 
 class cog_info(commands.Cog):
 
