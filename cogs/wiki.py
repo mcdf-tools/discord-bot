@@ -122,7 +122,7 @@ class cog_wiki(commands.Cog):
             db_request = list(self.db.users.find({'discord_id': ctx.author.id}))
 
             if len(db_request) == 0:
-                await ctx.send(f"Please specify a user! Otherwise, register with the bot with %link.")
+                await ctx.send(f"Please specify a user! Otherwise, register with the bot with `%linkaccount`.")
                 return
             
             # Set user to wiki name of registered user
@@ -148,7 +148,7 @@ class cog_wiki(commands.Cog):
             embedVar.add_field(name="Wiki Registration Date", value=request['users'][0]['registration'], inline=False)
             embedVar.add_field(name="Edit Count", value=request['users'][0]['editcount'], inline=False)
             embedVar.add_field(name="Groups", value=", ".join(request['users'][0]['groups']), inline=False)
-            
+
             await ctx.send(embed=embedVar)
         
         # Other wise send does not exist error
@@ -177,7 +177,7 @@ class cog_wiki(commands.Cog):
             await ctx.send("No page like that exists!")
             
             
-    @commands.command(name="linkAccount", aliases=[])
+    @commands.command(name="linkaccount", aliases=["link"])
     @commands.cooldown(1, 15, commands.BucketType.user)
     async def link(self, ctx, user=None):
 
