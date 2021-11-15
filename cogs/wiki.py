@@ -58,7 +58,7 @@ class cog_wiki(commands.Cog):
                 # update roles
                 member = await message.guild.fetch_member(db_request[0]['discord_id'])
                 
-                if db_request[0]['editcount'] >= 1:
+                if db_request[0]['editcount'] >= 25:
                     role = message.guild.get_role(843358516936704042)
                     await member.add_roles(role)
 
