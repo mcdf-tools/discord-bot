@@ -16,7 +16,6 @@ class cog_wiki(commands.Cog):
         self.db = mongodb.mc
 
         # Customise how the embed looks
-        self.footer_text = "Minecraft Discontinued Features Bot"
         self.thumbnail_image = "https://static.miraheze.org/mcdiscontinuedwiki/6/60/Wiki_Icon.png"
         self.embed_color = 0x407467
 
@@ -111,7 +110,6 @@ class cog_wiki(commands.Cog):
         
         # Create and send embed
         embedVar = discord.Embed(color=self.embed_color, title=f"Top Wiki Editors by {sort.title()}:", description=description)
-        embedVar.set_footer(text=self.footer_text)
         await ctx.send(embed=embedVar)
         
         
@@ -147,7 +145,6 @@ class cog_wiki(commands.Cog):
         # Ff this fails then the user doesn't exist
         try:
             embedVar = discord.Embed(color=self.embed_color, title=f"Stats for {request['users'][0]['name']}")
-            embedVar.set_footer(text=self.footer_text)
             embedVar.add_field(name="Wiki Registration Date", value=request['users'][0]['registration'], inline=False)
             embedVar.add_field(name="Edit Count", value=request['users'][0]['editcount'], inline=False)
             embedVar.add_field(name="Groups", value=", ".join(request['users'][0]['groups']), inline=False)
