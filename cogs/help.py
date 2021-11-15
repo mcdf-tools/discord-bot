@@ -14,7 +14,7 @@ class cog_help(commands.Cog):
         self.embed_color = 0x407467
 
     @commands.command(name="help", aliases=[])
-    @commands.cooldown(1, 10, commands.BucketType.user)
+    @commands.cooldown(1, 5, commands.BucketType.user)
     async def help(self, ctx, command=None):
 
         # If no specific command was chosen
@@ -48,7 +48,7 @@ class cog_help(commands.Cog):
         
         
     @commands.command(name="wiki", aliases=["info"])
-    @commands.cooldown(1, 10, commands.BucketType.user)
+    @commands.cooldown(1, 5, commands.BucketType.user)
     async def wiki(self, ctx):
 
         # Create embed
