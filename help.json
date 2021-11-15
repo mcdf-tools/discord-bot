@@ -8,9 +8,9 @@
 		"optional": "`command` the command you want help with. Default: none."
 	},
     {
-        "name": "wiki",
-		"usage": "`%wiki`",
-		"desc": "Displays wiki, discord and bot information.",
+        "name": "links",
+		"usage": "`%links`",
+		"desc": "Displays links for various projects and community platforms",
 		"aliases": [],
 		"required": "None",
 		"optional": "None"
@@ -40,8 +40,8 @@
 		"optional": "None"
     },
 	{
-        "name": "link",
-		"usage": "`%link <username>`",
+        "name": "linkAccount",
+		"usage": "`%linkAccount <username>`",
 		"desc": "Links the specified username.",
 		"aliases": [],
 		"required": "`username` the wiki username to link your discord account to.",
