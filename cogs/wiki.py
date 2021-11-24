@@ -48,7 +48,7 @@ class cog_wiki(commands.Cog):
             if description[0] == create_emoji:
                 wiki_page = description.split('has created article [')[1].split(']')[0]
                 channel = self.client.get_channel(787102130871861288)
-                await channel.send(f"The page {wiki_page.replace('_', ' ')} was created! check it out here: https://mcdiscontinued.miraheze.org/wiki/{wiki_page.replace(' ', '_')}")
+                await channel.send(f"The page {wiki_page.replace('_', ' ')} was created! Check it out here: https://mcdiscontinued.miraheze.org/wiki/{wiki_page.replace(' ', '_')}")
                 return
 
             # For edits
