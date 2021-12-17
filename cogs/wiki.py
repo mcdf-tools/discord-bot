@@ -43,16 +43,22 @@ class cog_wiki(commands.Cog):
         # Try and get embed description
         try:
             description = message.embeds[0].description
+            emoji = description[0]
 
             # For new pages
-            if description[0] == create_emoji:
-                wiki_page = description.split('has created article [')[1].split(']')[0]
-                channel = self.client.get_channel(787102130871861288)
-                await channel.send(f"The page {wiki_page.replace('_', ' ')} was created! Check it out here: https://mcdiscontinued.miraheze.org/wiki/{wiki_page.replace(' ', '_')}")
-                return
+            if emoji == create_emoji:
+                wiki_page = description.split('has created article [')[1].split(']')[0].replace(' ', '_')
+                namespace = wiki_page[:wiki_page.find(':')].replace('_', ' ')
+                page = wiki_page[wiki_page.find(':')+1:].replace('_', ' ')
+                
+                # Check if namespace makes sense
+                if namespace == "Java Edition" or namespace == "Bedrock Edition" or namespace == "Console Edition":
+                    channel = self.client.get_channel(787102130871861288)
+                    await channel.send(f"The page {page} for {namespace} was created! Check it out here: https://mcdiscontinued.miraheze.org/wiki/{wiki_page}")
+                    return
 
             # For edits
-            if description[0] == edit_emoji:
+            if emoji == edit_emoji:
                 wiki_name = description.split('[')[1].split(']')[0]
                 db_request = list(self.db.users.find({'wiki_name': wiki_name}))
                 
