@@ -11,8 +11,11 @@ class cog_cheese(commands.Cog):
     @commands.cooldown(1, 5, commands.BucketType.user)
     async def cheese(self, ctx):
       member = await message.guild.fetch_member(db_request[0]['discord_id'])
-      role = message.guild.get_role(editor_role)
-      await member.add_roles(802013239289970690)
+      role = message.guild.get_role(802013239289970690)
+      if role in member.roles:
+        await member.remove_roles(role)
+      else:
+        await member.add_roles(role)
 
 async def setup(bot):
     await bot.add_cog(cog_cheese(bot))
