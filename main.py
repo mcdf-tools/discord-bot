@@ -45,4 +45,4 @@ async def setup():
     bot.run(os.environ.get("DISCORD_TOKEN"))
 
 # Run bot
-setup()
+asyncio.run(setup())
