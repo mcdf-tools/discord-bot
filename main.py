@@ -42,7 +42,7 @@ async def setup():
     for file in os.listdir('./cogs'):
         if file.endswith(".py"):
             await bot.load_extension(f"cogs.{file[:-3]}")
-    bot.run(os.environ.get("DISCORD_TOKEN"))
+    await bot.start(os.environ.get("DISCORD_TOKEN"))
 
 # Run bot
 asyncio.run(setup())
