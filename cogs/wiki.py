@@ -104,7 +104,7 @@ class cog_wiki(commands.Cog):
         if not sort in ["editcount", "registration"]:
             await ctx.send("Invalid sort! see `%help leaderboard` for valid arguments")
             return
-        if limit > 150:
+        if limit > 50:
             await ctx.send("Max leaderboard limit is 150")
             return
         
