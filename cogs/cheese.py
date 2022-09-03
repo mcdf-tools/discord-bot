@@ -9,7 +9,7 @@ class cog_cheese(commands.Cog):
         
     @commands.command(name="cheese", aliases=["ILoveCheese"])
     @commands.cooldown(1, 5, commands.BucketType.user)
-    async def ILoveCheese(self, ctx, member):
+    async def ILoveCheese(self, ctx):
       member = ctx.message.author
       role = ctx.guild.get_role(802013239289970690)
       if role in member.roles:
