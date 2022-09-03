@@ -31,5 +31,5 @@ class cog_info(commands.Cog):
         await ctx.send(embed=embedVar)
         
 
-def setup(bot):
-    bot.add_cog(cog_info(bot))
+await def setup(bot):
+    async bot.add_cog(cog_info(bot))
