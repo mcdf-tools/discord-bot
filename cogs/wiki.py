@@ -101,15 +101,18 @@ class cog_wiki(commands.Cog):
         reverse = bool(reverse)
         
         # Make sure its a valid sort
-        if not sort in ["editcount", "registration"]:
+        valid_sorts = ["editcount", "registration"]
+        if not sort in valid_sorts:
             await ctx.send("Invalid sort! see `%help leaderboard` for valid arguments")
             return
-        if limit > 50:
-            await ctx.send("Max leaderboard limit is 50")
+        #Check that user count is under limit
+        user_limit = 50
+        if limit > user_limit:
+            await ctx.send("Max leaderboard limit is "+str(user_limit))
             return
         
         # Query and sort all users who have an edit
-        all_users = list(self.wiki.query(list="allusers", auprop="editcount|registration", aulimit=500, auwitheditsonly=True))[0]['allusers']
+        all_users = list(self.wiki.query(list="allusers", auprop="|".join(valid_sorts), aulimit=500, auwitheditsonly=True))[0]['allusers']
         sorted_users = sorted(all_users, key=lambda d: d[sort], reverse=not(reverse)) # not reverse to make it more relevant
         
         # Iterate through users to make the description pretty
