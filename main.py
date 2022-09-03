@@ -37,7 +37,7 @@ async def on_command_error(ctx, error):
         await ctx.send(f"Something broke. Error:\n`{error}`")
         print(error)
 
-async def setup():
+async def start():
     # load all cogs in the cogs directory
     for file in os.listdir('./cogs'):
         if file.endswith(".py"):
@@ -45,4 +45,4 @@ async def setup():
     await bot.start(os.environ.get("DISCORD_TOKEN"))
 
 # Run bot
-asyncio.run(setup())
+asyncio.run(start())
