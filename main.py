@@ -37,12 +37,12 @@ async def on_command_error(ctx, error):
         await ctx.send(f"Something broke. Error:\n`{error}`")
         print(error)
 
-def load_cogs():
+async def setup():
     # load all cogs in the cogs directory
     for file in os.listdir('./cogs'):
         if file.endswith(".py"):
-            bot.load_extension(f"cogs.{file[:-3]}")
+            await bot.load_extension(f"cogs.{file[:-3]}")
+    bot.run(os.environ.get("DISCORD_TOKEN"))
 
 # Run bot
-load_cogs()
-bot.run(os.environ.get("DISCORD_TOKEN"))
+setup()
