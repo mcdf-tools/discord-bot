@@ -255,5 +255,5 @@ class cog_wiki(commands.Cog):
         await ctx.send(f"Linked discord user {ctx.author.name} to wiki user {wiki_name}!")
         
         
-def setup(bot):
-    bot.add_cog(cog_wiki(bot))
+async def setup(bot):
+    await bot.add_cog(cog_wiki(bot))
