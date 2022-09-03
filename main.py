@@ -6,7 +6,7 @@ from dotenv import load_dotenv
 load_dotenv('.env')
 
 # Initialise bot
-intents = discord.Intents.default()
+intents = discord.Intents.all()
 bot = commands.Bot(command_prefix=os.environ.get("DISCORD_COMMAND_PREFIX"),intents=intents)
 # We make our own help function
 bot.remove_command('help') 
