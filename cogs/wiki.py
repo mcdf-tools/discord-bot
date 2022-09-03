@@ -105,7 +105,7 @@ class cog_wiki(commands.Cog):
             await ctx.send("Invalid sort! see `%help leaderboard` for valid arguments")
             return
         if limit > 50:
-            await ctx.send("Max leaderboard limit is 150")
+            await ctx.send("Max leaderboard limit is 50")
             return
         
         # Query and sort all users who have an edit
