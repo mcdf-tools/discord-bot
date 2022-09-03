@@ -104,6 +104,9 @@ class cog_wiki(commands.Cog):
         if not sort in ["editcount", "registration"]:
             await ctx.send("Invalid sort! see `%help leaderboard` for valid arguments")
             return
+        if limit > 150:
+            await ctx.send("Max leaderboard limit is 150")
+            return
         
         # Query and sort all users who have an edit
         all_users = list(self.wiki.query(list="allusers", auprop="editcount|registration", aulimit=500, auwitheditsonly=True))[0]['allusers']
